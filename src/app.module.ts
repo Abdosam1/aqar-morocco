@@ -31,21 +31,27 @@ import { Inquiry } from './modules/inquiries/entities/inquiry.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get<string>('DATABASE_HOST'),
-        port: config.get<number>('DATABASE_PORT'),
-        username: config.get<string>('DATABASE_USER'),
-        password: config.get<string>('DATABASE_PASSWORD'),
-        database: config.get<string>('DATABASE_NAME'),
-        entities: [
-          User, City, Neighborhood, Listing, ListingImage,
-          PropertyType, Favorite, Report, Notification,
-          AdminAction, Inquiry,
-        ],
-        synchronize: config.get<string>('NODE_ENV') === 'development',
-        ssl: config.get<string>('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
-      }),
+      useFactory: (config: ConfigService) => {
+        const url = config.get<string>('DATABASE_URL');
+        const isProd = config.get<string>('NODE_ENV') === 'production';
+
+        return {
+          type: 'postgres',
+          url: url,
+          host: !url ? config.get<string>('DATABASE_HOST') : undefined,
+          port: !url ? config.get<number>('DATABASE_PORT') : undefined,
+          username: !url ? config.get<string>('DATABASE_USER') : undefined,
+          password: !url ? config.get<string>('DATABASE_PASSWORD') : undefined,
+          database: !url ? config.get<string>('DATABASE_NAME') : undefined,
+          entities: [
+            User, City, Neighborhood, Listing, ListingImage,
+            PropertyType, Favorite, Report, Notification,
+            AdminAction, Inquiry,
+          ],
+          synchronize: config.get<string>('NODE_ENV') === 'development',
+          ssl: isProd ? { rejectUnauthorized: false } : false,
+        };
+      },
     }),
     ThrottlerModule.forRoot([{
       ttl: 60,
