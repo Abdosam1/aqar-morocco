@@ -1,0 +1,65 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ThrottlerModule } from '@nestjs/throttler';
+
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { ListingsModule } from './modules/listings/listings.module';
+import { CitiesModule } from './modules/cities/cities.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { InquiriesModule } from './modules/inquiries/inquiries.module';
+
+import { User } from './modules/users/entities/user.entity';
+import { City } from './modules/cities/entities/city.entity';
+import { Neighborhood } from './modules/cities/entities/neighborhood.entity';
+import { Listing } from './modules/listings/entities/listing.entity';
+import { ListingImage } from './modules/listings/entities/listing-image.entity';
+import { PropertyType } from './modules/listings/entities/property-type.entity';
+import { Favorite } from './modules/favorites/entities/favorite.entity';
+import { Report } from './modules/reports/entities/report.entity';
+import { Notification } from './modules/notifications/entities/notification.entity';
+import { AdminAction } from './modules/admin/entities/admin-action.entity';
+import { Inquiry } from './modules/inquiries/entities/inquiry.entity';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>('DATABASE_HOST'),
+        port: config.get<number>('DATABASE_PORT'),
+        username: config.get<string>('DATABASE_USER'),
+        password: config.get<string>('DATABASE_PASSWORD'),
+        database: config.get<string>('DATABASE_NAME'),
+        entities: [
+          User, City, Neighborhood, Listing, ListingImage,
+          PropertyType, Favorite, Report, Notification,
+          AdminAction, Inquiry,
+        ],
+        synchronize: config.get<string>('NODE_ENV') === 'development',
+        ssl: config.get<string>('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
+      }),
+    }),
+    ThrottlerModule.forRoot([{
+      ttl: 60,
+      limit: 100,
+    }]),
+    AuthModule,
+    UsersModule,
+    ListingsModule,
+    CitiesModule,
+    FavoritesModule,
+    ReportsModule,
+    AdminModule,
+    NotificationsModule,
+    InquiriesModule,
+  ],
+})
+export class AppModule { }
