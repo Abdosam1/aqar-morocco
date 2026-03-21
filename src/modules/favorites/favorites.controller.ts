@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FavoritesService } from './favorites.service';
 import { CurrentUser } from '../../common/decorators';
 
-@Controller('api/favorites')
+@Controller('favorites')
 @UseGuards(AuthGuard('jwt'))
 export class FavoritesController {
     constructor(private favService: FavoritesService) { }

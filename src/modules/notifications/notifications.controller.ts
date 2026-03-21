@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { NotificationsService } from './notifications.service';
 import { CurrentUser } from '../../common/decorators';
 
-@Controller('api/notifications')
+@Controller('notifications')
 @UseGuards(AuthGuard('jwt'))
 export class NotificationsController {
     constructor(private notifService: NotificationsService) { }

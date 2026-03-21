@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
 import { CurrentUser } from '../../common/decorators';
 
-@Controller('api/users')
+@Controller('users')
 export class UsersController {
     constructor(private usersService: UsersService) { }
 

@@ -4,7 +4,7 @@ import { ReportsService } from './reports.service';
 import { CurrentUser } from '../../common/decorators';
 import { ReportReason } from '../../shared/enums';
 
-@Controller('api/reports')
+@Controller('reports')
 @UseGuards(AuthGuard('jwt'))
 export class ReportsController {
     constructor(private reportsService: ReportsService) { }

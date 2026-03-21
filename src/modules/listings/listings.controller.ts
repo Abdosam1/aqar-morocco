@@ -11,7 +11,7 @@ import { Roles } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards';
 import { UserRole, ListingStatus } from '../../shared/enums';
 
-@Controller('api/listings')
+@Controller('listings')
 export class ListingsController {
     constructor(private listingsService: ListingsService) { }
 

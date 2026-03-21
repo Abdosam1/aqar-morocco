@@ -9,7 +9,7 @@ import { CurrentUser } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards';
 import { UserRole, ReportStatus } from '../../shared/enums';
 
-@Controller('api/admin')
+@Controller('admin')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Roles(UserRole.ADMIN)
 export class AdminController {
