@@ -27,8 +27,17 @@ async function bootstrap() {
   );
 
   // Global prefix
-  app.setGlobalPrefix('api', {
-    exclude: [{ path: '', method: RequestMethod.GET }],
+  app.setGlobalPrefix('api');
+
+  // Direct Express middleware for the root path
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('/', (req: any, res: any) => {
+    res.json({
+      status: 'online',
+      message: 'Aqar Morocco API is running successfully! 🇲🇦',
+      version: '1.0.0',
+      docs: '/api/docs'
+    });
   });
 
   const port = configService.get<number>('PORT', 3000);
