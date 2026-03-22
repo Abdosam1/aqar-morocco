@@ -39,6 +39,8 @@ export class ListingsService {
 
         if (filters.city_id) {
             query.andWhere('l.city_id = :city_id', { city_id: filters.city_id });
+        } else if (filters.city) {
+            query.andWhere('(c.name_fr = :city OR c.name = :city)', { city: filters.city });
         }
         if (filters.neighborhood_id) {
             query.andWhere('l.neighborhood_id = :nid', { nid: filters.neighborhood_id });

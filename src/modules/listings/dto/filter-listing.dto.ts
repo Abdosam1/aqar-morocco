@@ -10,6 +10,10 @@ export class FilterListingDto extends PaginationDto {
     city_id?: number;
 
     @IsOptional()
+    @IsString()
+    city?: string;
+
+    @IsOptional()
     @Type(() => Number)
     @IsNumber()
     neighborhood_id?: number;
