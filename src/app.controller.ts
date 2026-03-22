@@ -3,10 +3,15 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(): any {
+    return {
+      status: 'online',
+      message: 'Aqar Morocco API is running successfully! 🇲🇦',
+      version: '1.0.0',
+      docs: '/api/docs'
+    };
   }
 }
