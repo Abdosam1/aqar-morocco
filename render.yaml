@@ -1,9 +1,11 @@
 services:
+  # 1. Backend API (NestJS)
   - type: web
     name: aqar-morocco-backend
     env: docker
     plan: free
     region: frankfurt
+    rootDir: .
     envVars:
       - key: PORT
         value: 3000
@@ -15,6 +17,32 @@ services:
         generateValue: true
       - key: NODE_ENV
         value: production
+
+  # 2. Admin Dashboard (Next.js)
+  - type: web
+    name: aqar-morocco-admin
+    env: node
+    plan: free
+    region: frankfurt
+    repo: https://github.com/Abdosam1/aqar-morocco-admin
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: aqar-morocco-backend
+          property: host
+
+  # 3. Mobile Web Preview (Flutter Web)
+  - type: web
+    name: aqar-morocco-mobile-web
+    env: docker
+    plan: free
+    region: frankfurt
+    repo: https://github.com/Abdosam1/aqar-morocco-mobile
+    envVars:
+      - key: PORT
+        value: 80
 
 databases:
   - name: aqar-morocco-db
