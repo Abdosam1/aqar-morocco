@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: aqar-morocco-backend
+    env: docker
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aqar-morocco-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: aqar-morocco-db
+    plan: free
+    region: frankfurt
