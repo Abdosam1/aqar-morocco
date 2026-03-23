@@ -39,3 +39,23 @@ export enum ReportStatus {
   DISMISSED = 'dismissed',
   ACTIONED = 'actioned',
 }
+
+export enum AppRole {
+  BUYER = 'buyer',
+  TENANT = 'tenant',
+  SELLER = 'seller',
+  LANDLORD = 'landlord',
+  AGENCY = 'agency',
+}
+
+export enum VisitStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  DECLINED = 'declined',
+  COMPLETED = 'completed',
+}
+
+export enum LeadPurpose {
+  BUYING = 'buying',
+  RENTING = 'renting',
+}

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, Matches, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, Matches, IsOptional, IsArray } from 'class-validator';
 
 export class RegisterDto {
     @IsEmail()
@@ -25,4 +25,9 @@ export class RegisterDto {
         message: 'WhatsApp must be a valid Moroccan number',
     })
     whatsapp?: string;
+
+    @IsArray()
+    @IsNotEmpty()
+    @IsString({ each: true })
+    app_roles: string[];
 }

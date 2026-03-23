@@ -1,42 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Notification } from './entities/notification.entity';
+import { Notification, NotificationType } from './entities/notification.entity';
 
 @Injectable()
 export class NotificationsService {
     constructor(
         @InjectRepository(Notification)
-        private notifRepo: Repository<Notification>,
+        private notificationRepo: Repository<Notification>,
     ) { }
 
-    async create(userId: string, type: string, title: string, body?: string, data?: any) {
-        const notif = this.notifRepo.create({ user_id: userId, type, title, body, data });
-        return this.notifRepo.save(notif);
+    async create(userId: string, title: string, message: string, type: NotificationType, relatedId?: string) {
+        const notification = this.notificationRepo.create({
+            user_id: userId,
+            title,
+            message,
+            type,
+            related_id: relatedId,
+        });
+        return this.notificationRepo.save(notification);
     }
 
-    async findByUser(userId: string, page = 1, limit = 20) {
-        const [data, total] = await this.notifRepo.findAndCount({
+    async getMyNotifications(userId: string) {
+        return this.notificationRepo.find({
             where: { user_id: userId },
             order: { created_at: 'DESC' },
-            skip: (page - 1) * limit,
-            take: limit,
+            take: 20,
         });
-        return { data, meta: { total, page, limit, total_pages: Math.ceil(total / limit) } };
     }
 
     async markAsRead(id: string, userId: string) {
-        await this.notifRepo.update({ id, user_id: userId }, { is_read: true });
-        return { read: true };
+        return this.notificationRepo.update({ id, user_id: userId }, { is_read: true });
     }
 
     async markAllAsRead(userId: string) {
-        await this.notifRepo.update({ user_id: userId, is_read: false }, { is_read: true });
-        return { read_all: true };
-    }
-
-    async getUnreadCount(userId: string) {
-        const count = await this.notifRepo.count({ where: { user_id: userId, is_read: false } });
-        return { unread_count: count };
+        return this.notificationRepo.update({ user_id: userId }, { is_read: true });
     }
 }

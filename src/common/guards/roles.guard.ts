@@ -16,6 +16,21 @@ export class RolesGuard implements CanActivate {
             return true;
         }
         const { user } = context.switchToHttp().getRequest();
-        return requiredRoles.some((role) => user?.role === role);
+
+        // System Admin always has access
+        if (user?.role === UserRole.ADMIN) return true;
+
+        // Check if any required role matches system role or business roles
+        return requiredRoles.some((role) => {
+            if (user?.role === role) return true;
+
+            // Business logic: if OWNER is required, allow sellers, landlords, and agencies
+            if (role === UserRole.OWNER) {
+                const businessRoles = ['seller', 'landlord', 'agency'];
+                return user?.app_roles?.some(r => businessRoles.includes(r));
+            }
+
+            return false;
+        });
     }
 }

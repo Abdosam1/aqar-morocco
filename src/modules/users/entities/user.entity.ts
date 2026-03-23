@@ -51,6 +51,18 @@ export class User {
     @Column({ type: 'varchar', length: 255, nullable: true })
     fcm_token: string;
 
+    @Column({ type: 'simple-array', nullable: true })
+    app_roles: string[];
+
+    @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
+    budget: number;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    preferred_area: string;
+
+    @Column({ type: 'date', nullable: true })
+    move_date: Date;
+
     @CreateDateColumn({ type: 'timestamptz' })
     created_at: Date;
 

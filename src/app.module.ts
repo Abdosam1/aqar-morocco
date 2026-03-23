@@ -12,6 +12,8 @@ import { ReportsModule } from './modules/reports/reports.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { InquiriesModule } from './modules/inquiries/inquiries.module';
+import { VisitsModule } from './modules/visits/visits.module';
+import { MessagesModule } from './modules/messages/messages.module';
 
 import { User } from './modules/users/entities/user.entity';
 import { City } from './modules/cities/entities/city.entity';
@@ -24,6 +26,8 @@ import { Report } from './modules/reports/entities/report.entity';
 import { Notification } from './modules/notifications/entities/notification.entity';
 import { AdminAction } from './modules/admin/entities/admin-action.entity';
 import { Inquiry } from './modules/inquiries/entities/inquiry.entity';
+import { VisitRequest } from './modules/visits/entities/visit-request.entity';
+import { Message } from './modules/messages/entities/message.entity';
 
 @Module({
   imports: [
@@ -46,7 +50,7 @@ import { Inquiry } from './modules/inquiries/entities/inquiry.entity';
           entities: [
             User, City, Neighborhood, Listing, ListingImage,
             PropertyType, Favorite, Report, Notification,
-            AdminAction, Inquiry,
+            AdminAction, Inquiry, VisitRequest, Message,
           ],
           synchronize: config.get<string>('NODE_ENV') === 'development',
           ssl: isProd ? { rejectUnauthorized: false } : false,
@@ -66,6 +70,8 @@ import { Inquiry } from './modules/inquiries/entities/inquiry.entity';
     AdminModule,
     NotificationsModule,
     InquiriesModule,
+    VisitsModule,
+    MessagesModule,
   ],
 })
 export class AppModule { }

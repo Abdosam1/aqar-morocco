@@ -35,6 +35,7 @@ export class AuthService {
             phone: dto.phone,
             whatsapp: dto.whatsapp || null,
             role: UserRole.USER,
+            app_roles: dto.app_roles,
         });
 
         const savedUser = await this.userRepo.save(user);
@@ -49,6 +50,7 @@ export class AuthService {
                 email: savedUser.email,
                 full_name: savedUser.full_name,
                 role: savedUser.role,
+                app_roles: savedUser.app_roles,
             },
         };
     }
@@ -84,6 +86,7 @@ export class AuthService {
                 email: user.email,
                 full_name: user.full_name,
                 role: user.role,
+                app_roles: user.app_roles,
             },
         };
     }

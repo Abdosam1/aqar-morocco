@@ -89,6 +89,12 @@ export class AdminService {
         return { message: 'User unbanned', user_id: userId };
     }
 
+    async verifyUser(userId: string, adminId: string) {
+        await this.userRepo.update(userId, { is_verified: true });
+        await this.logAction(adminId, 'verify_user', 'user', userId);
+        return { message: 'User verified', user_id: userId };
+    }
+
     async getStats() {
         const totalUsers = await this.userRepo.count();
         const totalListings = await this.listingRepo.count();

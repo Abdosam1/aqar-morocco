@@ -85,4 +85,12 @@ export class AdminController {
     ) {
         return this.adminService.unbanUser(id, adminId);
     }
+
+    @Patch('users/:id/verify')
+    verifyUser(
+        @Param('id', ParseUUIDPipe) id: string,
+        @CurrentUser('id') adminId: string,
+    ) {
+        return this.adminService.verifyUser(id, adminId);
+    }
 }
